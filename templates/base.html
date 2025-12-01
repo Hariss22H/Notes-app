@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Notes App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="app">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="{{ url_for('index') }}" class="brand-link">
+            <span class="brand-logo">📝</span>
+            <span class="brand-title">Notes App</span>
+          </a>
+        </div>
+        <nav class="site-nav">
+          <a class="btn btn-primary" href="{{ url_for('new_note') }}"><i class="fa fa-plus" aria-hidden="true"></i> New Note</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container main-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">Made with <span class="heart">❤</span> — Simple Notes</div>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2 class="page-title">All Notes</h2>
+  {% if notes %}
+    <ul class="notes-grid">
+      {% for note in notes %}
+        <li id="note-{{ note.id }}" class="note-card">
+          <a class="title" href="{{ url_for('view_note', note_id=note.id) }}">{{ note.title }}</a>
+          <p class="excerpt">{{ note.body[:140] }}{% if note.body|length > 140 %}…{% endif %}</p>
+          <div class="meta muted">{{ note.updated_at.strftime('%Y-%m-%d %H:%M') }}</div>
+          <div class="actions">
+            <a class="btn btn-outline" href="{{ url_for('view_note', note_id=note.id) }}">View</a>
+            <button class="btn btn-danger delete-btn" data-id="{{ note.id }}"><i class="fa fa-trash"></i> Delete</button>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="note-card">
+      <p>No notes yet. <a href="{{ url_for('new_note') }}">Create one</a>.</p>
+    </div>
+  {% endif %}
+{% endblock %}
