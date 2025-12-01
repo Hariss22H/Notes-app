@@ -1,4 +1,4 @@
-name: CI / Build / Push / Deploy (simple)
+name: CI / Build / Push (simple)
 
 on:
   push:
@@ -9,10 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set PYTHONPATH to repo workspace
+        # ensures Python can import app.py at repo root
+        run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+
       - name: Setup Python
         uses: actions/setup-python@v4
-        with: { python-version: '3.11' }
-      - name: Install deps & run tests
+        with:
+          python-version: '3.11'
+
+      - name: Install & Run Tests
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -25,16 +32,16 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/notes-app:latest
-
-  # OPTIONAL: automated deploy to EC2 if you later add EC2 secrets
